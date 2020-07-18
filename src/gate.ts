@@ -70,6 +70,13 @@ export function transformGate(gate: Gate, indices: number[], nBits: number): Gat
     }
 }
 
+export function identityGate(size: number): Gate {
+    return {
+        transformer: math.identity(2**size).valueOf() as number[][],
+        size
+    }
+}
+
 /**
  * Common gates
  */

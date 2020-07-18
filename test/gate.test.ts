@@ -1,5 +1,5 @@
 import { exp } from 'mathjs'
-import { transformGate } from '../src/gate'
+import { identityGate, transformGate } from '../src/gate'
 
 describe('transform gate', () => {
     const gate1 = {
@@ -73,5 +73,18 @@ describe('transform gate', () => {
             size: 2
         }
         expect(transformedGate).toEqual(expectedGate)
+    })
+})
+
+describe('construction', () => {
+    test('identity gate', () => {
+        const identityGate1 = {
+            transformer: [
+                [ 1, 0 ],
+                [ 0, 1 ]
+            ],
+            size: 1
+        }
+        expect(identityGate(1)).toEqual(identityGate1)
     })
 })
