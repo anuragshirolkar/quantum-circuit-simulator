@@ -1,12 +1,13 @@
 import { Map } from "immutable"
+import { nthBit } from './bits'
+import { sum } from './utils'
 
-
-interface WaveFunction {
+export interface WaveFunction {
     map: Map<number, number>
     nBits: number
 }
 
-function collapse(index: number, value: number, waveFunction: WaveFunction): WaveFunction {
+export function collapse(index: number, value: number, waveFunction: WaveFunction): WaveFunction {
     var nonNormalizedCollapsedWaveFunctionMap = waveFunction.map
         .filter((alpha, outcome) => nthBit(index, outcome) == value)
     var denominator = Math.sqrt(sum(nonNormalizedCollapsedWaveFunctionMap.valueSeq().toArray().map(a => a*a)))
