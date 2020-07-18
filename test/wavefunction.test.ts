@@ -1,17 +1,28 @@
 import { Map } from 'immutable'
 import { WaveFunction, collapse, sample } from '../src/wavefunction'
 
+const uwf1: WaveFunction = {
+    nBits: 1,
+    map: Map([
+        [0, Math.SQRT1_2],
+        [1, Math.SQRT1_2]
+    ])
+}
+
+const uwf2: WaveFunction = {
+    nBits: 2,
+    map: Map([
+        [0, 1/2],
+        [1, 1/2],
+        [2, 1/2],
+        [3, 1/2]
+    ])
+}
+
 describe('collapse', () => {
     test('correctly collapses the wavefunction in a single bit system', () => {
-        const wf: WaveFunction = {
-            nBits: 1,
-            map: Map([
-                [0, Math.SQRT1_2],
-                [1, Math.SQRT1_2]
-            ])
-        }
         // Act
-        const resultWf = collapse(0, 0, wf)
+        const resultWf = collapse(0, 0, uwf1)
     
         // Assert
         expect(resultWf.nBits).toBe(1)
@@ -20,18 +31,8 @@ describe('collapse', () => {
     })
     
     test('correctly collapses the wavefunction in a multiple bit system', () => {
-        const wf: WaveFunction = {
-            nBits: 2,
-            map: Map([
-                [0, 1/2],
-                [1, 1/2],
-                [2, 1/2],
-                [3, 1/2]
-            ])
-        }
-    
         // Act
-        const resultWf = collapse(0, 0, wf)
+        const resultWf = collapse(0, 0, uwf2)
         
         // Assert
         expect(resultWf.nBits).toBe(2)
@@ -48,17 +49,6 @@ describe('sample', () => {
         Math.random = trueRandom
     })
     
-    // Uniform wave function with 2 bits
-    const uwf2: WaveFunction = {
-        nBits: 2,
-        map: Map([
-            [0, 1/2],
-            [1, 1/2],
-            [2, 1/2],
-            [3, 1/2]
-        ])
-    }
-
     test('returns 0 for uniform bit with mocked random to 0.1', () => {
         // Arrange
         Math.random = () => 0.1
