@@ -7,13 +7,24 @@ export interface WaveFunction {
     nBits: number
 }
 
-export function collapse(index: number, value: number, waveFunction: WaveFunction): WaveFunction {
-    var nonNormalizedCollapsedWaveFunctionMap = waveFunction.map
+export function collapse(index: number, value: number, wf: WaveFunction): WaveFunction {
+    var nonNormalizedCollapsedWaveFunctionMap = wf.map
         .filter((alpha, outcome) => nthBit(index, outcome) == value)
     var denominator = Math.sqrt(sum(nonNormalizedCollapsedWaveFunctionMap.valueSeq().toArray().map(a => a*a)))
     return {
-        ...waveFunction,
+        ...wf,
         map: nonNormalizedCollapsedWaveFunctionMap.map(alpha => alpha/denominator)
     }
 }
 
+export function sample(index: number, wf: WaveFunction): number {
+    const probability0 =
+        sum(wf.map
+        .filter((alpha, outcome) => nthBit(index, outcome) == 0)
+        .map(alpha => alpha**2)
+        .valueSeq().toArray())
+    if (Math.random() > probability0) {
+        return 1
+    }
+    return 0
+}
