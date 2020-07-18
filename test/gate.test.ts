@@ -1,5 +1,7 @@
 import { exp } from 'mathjs'
-import { identityGate, transformGate } from '../src/gate'
+import { applyGate, identityGate, transformGate, X } from '../src/gate'
+import { Map } from 'immutable'
+import { WaveFunction } from '../src/wavefunction'
 
 describe('transform gate', () => {
     const gate1 = {
@@ -86,5 +88,49 @@ describe('construction', () => {
             size: 1
         }
         expect(identityGate(1)).toEqual(identityGate1)
+    })
+})
+
+describe('gate application', () => {
+    test('correctly returns the result of applying X gate on a single qubit', () => {
+        const wf: WaveFunction = {
+            nBits: 1,
+            map: Map([
+                [0, Math.sqrt(0.1)],
+                [1, Math.sqrt(0.9)]
+            ])
+        }
+
+        // Act
+        const wfAfterX = applyGate(X, wf)
+
+        // Assert
+        expect(wfAfterX.nBits).toBe(1)
+        expect(wfAfterX.map.get(0)).toBe(Math.sqrt(0.9))
+        expect(wfAfterX.map.get(1)).toBe(Math.sqrt(0.1))
+    })
+
+    test('correctly returns the result of applying X gate on a 2 qubit system', () => {
+        const wf: WaveFunction = {
+            nBits: 2,
+            map: Map([
+                [0, Math.sqrt(0.1)],
+                [1, Math.sqrt(0.9)]
+            ])
+        }
+
+        const gate = transformGate(X, [1], 2)
+
+        // Act
+        const wfAfterX = applyGate(gate, wf)
+
+        // Assert
+        expect(wfAfterX.nBits).toBe(2)
+        expect(wfAfterX.map.get(2)).toBe(Math.sqrt(0.1))
+        expect(wfAfterX.map.get(3)).toBe(Math.sqrt(0.9))
+    })
+
+    test('throws error when wave function and gate sizes don\'t match', () => {
+        expect(() => applyGate(X, { nBits: 2, map: Map() })).toThrow()
     })
 })

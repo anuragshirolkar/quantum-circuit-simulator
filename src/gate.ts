@@ -1,6 +1,7 @@
 import * as math from 'mathjs'
 import { extname } from 'path'
 import { bitArray, fromBitArray } from './bits'
+import { fromStateVector, stateVector, WaveFunction } from './wavefunction'
 
 /**
  * @param indices indices to be pushed to the top
@@ -75,6 +76,20 @@ export function identityGate(size: number): Gate {
         transformer: math.identity(2**size).valueOf() as number[][],
         size
     }
+}
+
+/**
+ * Returns in the new wave function of qubits after applying the gate.
+ * @param gate the gate to be applied to the qubits
+ * @param wf wave function of qubits
+ */
+export function applyGate(gate: Gate, wf: WaveFunction): WaveFunction {
+    if (gate.size != wf.nBits) {
+        throw new Error('Gate and wave function sizes are not equal')
+    }
+    return fromStateVector(
+        math.multiply(stateVector(wf), gate.transformer),
+        wf.nBits)
 }
 
 /**

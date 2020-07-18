@@ -1,4 +1,5 @@
 import { Map } from "immutable"
+import { range } from "mathjs"
 import { nthBit } from './bits'
 import { sum } from './utils'
 
@@ -27,4 +28,27 @@ export function sample(index: number, wf: WaveFunction): number {
         return 1
     }
     return 0
+}
+
+/**
+ * Returns the list of probability amplitudes from the map.
+ * @param wf wave function
+ */
+export function stateVector(wf: WaveFunction): number[] {
+    return Array.from(Array(2**wf.nBits).keys())
+        .map(i => wf.map.get(i, 0))
+}
+
+/**
+ * Returns the wave function corresponding to the given list of probability amplitudes.
+ * @param sv list of probability amplitudes
+ * @param nBits number of bits
+ */
+export function fromStateVector(sv: number[], nBits: number): WaveFunction {
+    const map = Map(sv.map((value, index) => [index, value] as [number, number])
+        .filter(([index, value]) => value != 0))
+    return {
+        nBits,
+        map
+    }
 }

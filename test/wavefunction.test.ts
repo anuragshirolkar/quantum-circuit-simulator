@@ -1,5 +1,5 @@
 import { Map } from 'immutable'
-import { WaveFunction, collapse, sample } from '../src/wavefunction'
+import { WaveFunction, collapse, sample, stateVector, fromStateVector } from '../src/wavefunction'
 
 const uwf1: WaveFunction = {
     nBits: 1,
@@ -63,5 +63,24 @@ describe('sample', () => {
 
         // Act, Assert
         expect(sample(0, uwf2)).toBe(1)
+    })
+})
+
+describe('state vector', () => {
+    const wf: WaveFunction = {
+        nBits: 2,
+        map: Map([
+            [0, Math.SQRT1_2],
+            [2, Math.SQRT1_2]])
+    }
+
+    const sv = [ Math.SQRT1_2, 0, Math.SQRT1_2, 0 ]
+
+    test('correctly returns the state vector', () => {
+        expect(stateVector(wf)).toEqual(sv)
+    })
+
+    test('correctly constructs wave function from the state vector', () => {
+        expect(fromStateVector(sv, 2)).toEqual(wf)
     })
 })
