@@ -70,7 +70,12 @@ export function transformGate(gate: Gate, indices: number[], nBits: number): Gat
     }
 }
 
-const CNOT = {
+/**
+ * Common gates
+ */
+
+ // Controlled not gate
+export const CNOT = {
     transformer: [
         [1, 0, 0, 0],
         [0, 0, 0, 1],
@@ -80,4 +85,29 @@ const CNOT = {
     size: 2
 }
 
-console.log(math.multiply([1,2,3,4,5,6,7,8], transformGate(CNOT, [2,1], 3).transformer))
+// Bit flip gate
+export const X = {
+    transformer: [
+        [0, 1],
+        [1, 0]
+    ],
+    size: 1
+}
+
+// Phase flip gate
+export const Z = {
+    transformer: [
+        [1, 0],
+        [0, -1]
+    ],
+    size: 1
+}
+
+// Hadamard gate
+export const H = {
+    transformer: [
+        [Math.SQRT1_2, Math.SQRT1_2],
+        [Math.SQRT1_2, -Math.SQRT1_2]
+    ],
+    size: 1
+}
