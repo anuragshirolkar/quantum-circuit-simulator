@@ -1,5 +1,5 @@
 import { Map } from 'immutable'
-import { WaveFunction, collapse, sample, stateVector, fromStateVector } from '../src/wavefunction'
+import { WaveFunction, collapse, sample, stateVector, fromStateVector, printWaveFunction } from '../src/wavefunction'
 
 const uwf1: WaveFunction = {
     nBits: 1,
@@ -82,5 +82,27 @@ describe('state vector', () => {
 
     test('correctly constructs wave function from the state vector', () => {
         expect(fromStateVector(sv, 2)).toEqual(wf)
+    })
+})
+
+describe('print', () => {
+    test('correctly prints single qubit wavefunction', () => {
+        // Arrange
+        const mockLog = jest.fn()
+        console.log = mockLog
+        
+        const wf: WaveFunction = {
+            nBits: 1,
+            map: Map([
+                [0, 0.2],
+                [1, 0.5]
+            ])
+        }
+
+        // Act
+        printWaveFunction(wf)
+
+        // Assert
+        expect(mockLog.mock.calls[0][0]).toBe('0.2|0> + 0.5|1>')
     })
 })

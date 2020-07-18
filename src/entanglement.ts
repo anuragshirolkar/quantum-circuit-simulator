@@ -8,6 +8,7 @@ export function entangle(wf1: WaveFunction, wf2: WaveFunction): WaveFunction {
     const sv1 = stateVector(wf1)
     const sv2 = stateVector(wf2)
 
+    // outer product of the 2 vectors
     const svResult2D = math.multiply(math.transpose([sv2]), [sv1]).valueOf() as number[][]
 
     return fromStateVector(

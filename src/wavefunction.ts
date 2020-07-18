@@ -1,6 +1,6 @@
 import { Map } from "immutable"
 import { range } from "mathjs"
-import { nthBit } from './bits'
+import { bitArray, nthBit } from './bits'
 import { sum } from './utils'
 
 export interface WaveFunction {
@@ -50,5 +50,14 @@ export function fromStateVector(sv: number[], nBits: number): WaveFunction {
     return {
         nBits,
         map
+    }
+}
+
+export function printWaveFunction(wf: WaveFunction) {
+    console.log(wf.map.map((alpha, outcome) => alpha + '|' + bitString(outcome) + '>')
+        .join(' + '))
+
+    function bitString(outcome: number): string {
+        return bitArray(outcome, wf.nBits).reverse().join('')
     }
 }
