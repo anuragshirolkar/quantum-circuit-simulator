@@ -54,6 +54,10 @@ export function addLayer(layer: Layer, circuit: Circuit): Circuit {
     throw new Error('Addition results in an invalid circuit')
 }
 
+export function addLayers(layers: Layer[], circuit: Circuit): Circuit {
+    return layers.reduce((cir, layer) => addLayer(layer, cir), circuit)
+}
+
 export function validateCircuit({ nQ, nC, layers }: Circuit): boolean {
     return layers.every(layer => {
         if (layer.type == 'Gate') return validateGateLayer(nQ, layer)
