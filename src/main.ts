@@ -1,24 +1,19 @@
 import { List, Map } from "immutable";
-import { Circuit, Register, simulate } from "./circuit";
+import { addLayer, Circuit, initCircuit, Register, simulate } from "./circuit";
 import { CNOT, H } from "./gate";
 import { printWaveFunction } from "./wavefunction";
 
 
-const bellCircuit: Circuit = {
-    nC: 0,
-    nQ: 2,
-    layers: List([
-        {
-            type: 'Gate',
-            gate: H,
-            inputs: [0]
-        }, {
-            type: 'Gate',
-            gate: CNOT,
-            inputs: [0, 1]
-        }
-    ])
-}
+const bellCircuit: Circuit =
+    addLayer({
+        type: 'Gate',
+        gate: CNOT,
+        inputs: [0, 1]
+    }, addLayer({
+        type: 'Gate',
+        gate: H,
+        inputs: [0]
+    }, initCircuit(2, 0)))
 
 const input: Register = {
     c: List([]),

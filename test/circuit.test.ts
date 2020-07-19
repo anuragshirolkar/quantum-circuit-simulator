@@ -1,6 +1,6 @@
 import { List, Map } from 'immutable'
 import { addLayer, Circuit, initCircuit, Layer, validateCircuit, simulate } from '../src/circuit'
-import { X, Z } from '../src/gate'
+import { X } from '../src/gate'
 import { WaveFunction } from '../src/wavefunction'
 
 describe('construction', () => {
