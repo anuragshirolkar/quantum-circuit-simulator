@@ -1,57 +1,121 @@
-import { addLayer, Circuit, initCircuit, resolveCircuit } from '../src/circuit'
+import { List } from 'immutable'
+import { addLayer, Circuit, initCircuit, Layer, validateCircuit } from '../src/circuit'
 import { X, Z } from '../src/gate'
 
 describe('construction', () => {
     const emptyCircuit2: Circuit = {
-        size: 2,
-        layers: []
+        nQ: 2,
+        nC: 0,
+        layers: List([])
     }
 
     test('initializes empty circuit', () => {
-        expect(initCircuit(1)).toEqual({
-            size: 1,
-            layers: []
+        expect(initCircuit(1, 2)).toEqual({
+            nQ: 1,
+            nC: 2,
+            layers: List([])
         })
     })
 
     test('adds layers to a ciruit', () => {
+        const layer: Layer = {
+            type: "Gate",
+            gate: X,
+            inputs: [0]
+        }
+
         // Act
-        const resultCircuit = addLayer(X, [0], emptyCircuit2)
+        const resultCircuit = addLayer(layer, emptyCircuit2)
 
         // Assert
         const expectedCircuit = {
-            size: 2,
-            layers: [{
+            nQ: 2,
+            nC: 0,
+            layers: List([{
+                type: "Gate",
                 gate: X,
                 inputs: [0]
-            }]
+            }])
         }
         expect(resultCircuit).toEqual(expectedCircuit)
     })
-})
 
-describe(resolveCircuit, () => {
-    test('correctly resolves a circuit into an equivalent abstract gate', () => {
-        const circuit: Circuit = {
-            size: 2,
-            layers: [
-                { inputs: [0], gate: X },
-                { inputs: [1], gate: Z }
-            ]
+    test('throws for invalid addition of layer', () => {
+        const layer: Layer = {
+            type: 'Measurement',
+            input: 0,
+            output: 0
         }
 
-        // Act
-        const resultGate = resolveCircuit(circuit)
+        expect(() => addLayer(layer, emptyCircuit2)).toThrow()
+    })
+})
 
-        // Assert
-        expect(resultGate.size).toBe(2)
-        // since the two gates are applied on different qubits, the resulting
-        // gate is `X <tensor-product> Z`
-        expect(resultGate.transformer).toEqual([
-            [0, 1, 0, 0],
-            [1, 0, 0, 0],
-            [0, 0, 0, -1],
-            [0, 0, -1, 0]
-        ])
+describe('circuit validation', () => {
+    test('fewer qubits in gate layer', () => {
+        const circuit: Circuit = {
+            nQ: 0,
+            nC: 0,
+            layers: List([{
+                type: 'Gate',
+                inputs: [0],
+                gate: X
+            }])
+        }
+        
+    })
+
+    test('fewer qubits in conditional gate layer', () => {
+        const circuit: Circuit = {
+            nQ: 0,
+            nC: 1,
+            layers: List([{
+                type: 'ConditionalGate',
+                inputs: [0],
+                condition: 0,
+                gate: X
+            }])
+        }
+        expect(validateCircuit(circuit)).toBe(false)
+    })
+
+    test('fewer classical bits in conditional gate layer', () => {
+        const circuit: Circuit = {
+            nQ: 1,
+            nC: 0,
+            layers: List([{
+                type: 'ConditionalGate',
+                inputs: [0],
+                condition: 0,
+                gate: X
+            }])
+        }
+        expect(validateCircuit(circuit)).toBe(false)
+    })
+
+    test('fewer qubits in measurement layer', () => {
+        const circuit: Circuit = {
+            nQ: 0,
+            nC: 1,
+            layers: List([{
+                type: 'Measurement',
+                input: 0,
+                output: 0
+            }])
+        }
+        expect(validateCircuit(circuit)).toBe(false)
+    })
+
+    test('fewer classical bits in measurement layer', () => {
+        const circuit: Circuit = {
+            nQ: 1,
+            nC: 0,
+            layers: List([{
+                type: 'Measurement',
+                input: 0,
+                output: 0
+            }])
+        }
+        expect(validateCircuit(circuit)).toBe(false)
     })
 })
