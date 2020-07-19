@@ -1,5 +1,4 @@
 import * as math from 'mathjs'
-import { extname } from 'path'
 import { bitArray, fromBitArray } from './bits'
 import { fromStateVector, stateVector, WaveFunction } from './wavefunction'
 
