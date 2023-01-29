@@ -21,8 +21,9 @@ Output wavefunction - $$\dfrac{|00 \rangle + |11 \rangle}{\sqrt{2}} = 0.7071 \cd
 
 ## Teleportation circuit
 
-3 qubits - p, q, r
-Alice holds p and q, Bob holds r. We want to teleport the state of the qubit p to the qubit r.
+3 qubits - `p`, `q`, `r`
+
+Alice holds `p` and `q`, Bob holds `r`. We want to teleport the state of the qubit `p` to the qubit `r`.
 
 <p align="center">
     <img src="./assets/teleportation%20circuit.png" alt="Teleportation circuit" width="700">
