@@ -29,9 +29,10 @@ Alice holds `p` and `q`, Bob holds `r`. We want to teleport the state of the qub
     <img src="./assets/teleportation%20circuit.png" alt="Teleportation circuit" width="700">
 </p>
 
-Input wavefunction - $$\alpha \cdot |000 \rangle + \beta \cdot |000 \rangle = |00 \rangle_{pq} \otimes (\alpha \cdot |0 \rangle_r + \beta \cdot |1 \rangle_r)$$
+Input wavefunction - $$\alpha \cdot |000 \rangle + \beta \cdot |000 \rangle = (\alpha \cdot |0 \rangle_p + \beta \cdot |1 \rangle_p) \otimes |0 \rangle_q \otimes |0 \rangle_r$$
 
-One possible output wavefunction - $$\alpha \cdot |000 \rangle + \beta \cdot |101 \rangle = |0 \rangle_q \otimes (\alpha \cdot |00 \rangle_{pr} + \beta \cdot |11 \rangle_{pr}$$
+One possible output wavefunction - $$\alpha \cdot |100 \rangle + \beta \cdot |101 \rangle = |1 \rangle_p \otimes |0 \rangle_q \otimes (\alpha \cdot |0 \rangle_r + \beta \cdot |1 \rangle_r)$$
+In this case, `p` has collapsed into the state $|1 \rangle$ and `q` has collapsed into the state $|0 \rangle$ and `r` has got `p`'s initial wavefunction.
 
 Running main
 ```
@@ -43,8 +44,8 @@ Wavefunction before the simulation: 1|00>
 Wavefunction after simulation: 0.7071|00> + 0.7071|11>
 
 Simulating teleportation circuit...
-Wavefunction before the simulation: 0.6325|000> + 0.7746|001>
-Wavefunction after simulation: 0.6325|001> + 0.7746|101>
+Wavefunction before the simulation: 0.6325|000> + 0.7746|100>
+Wavefunction after simulation: 0.6325|100> + 0.7746|101>
 ```
 Running tests
 ```
