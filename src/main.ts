@@ -2,7 +2,7 @@ import { List, Map } from "immutable";
 import { addLayer, addLayers, Circuit, initCircuit, Layer, Register, simulate } from "./circuit";
 import { entangle } from "./entanglement";
 import { CNOT, H, X, Z } from "./gate";
-import { printWaveFunction, waveFunctionString } from "./wavefunction";
+import { waveFunctionString } from "./wavefunction";
 
 // Bell circuit
 const bellCircuit: Circuit =
