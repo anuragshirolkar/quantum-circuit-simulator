@@ -54,8 +54,11 @@ export function fromStateVector(sv: number[], nBits: number): WaveFunction {
 }
 
 export function printWaveFunction(wf: WaveFunction) {
-    console.log(wf.map.map((alpha, outcome) => parseFloat(alpha.toFixed(4)) + '|' + bitString(outcome) + '>')
-        .join(' + '))
+    console.log(waveFunctionString(wf));
+}
+
+export function waveFunctionString(wf: WaveFunction) {
+    return wf.map.map((alpha, outcome) => parseFloat(alpha.toFixed(4)) + '|' + bitString(outcome) + '>').join(' + ');
 
     function bitString(outcome: number): string {
         return bitArray(outcome, wf.nBits).reverse().join('')

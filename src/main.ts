@@ -2,7 +2,7 @@ import { List, Map } from "immutable";
 import { addLayer, addLayers, Circuit, initCircuit, Layer, Register, simulate } from "./circuit";
 import { entangle } from "./entanglement";
 import { CNOT, H, X, Z } from "./gate";
-import { printWaveFunction } from "./wavefunction";
+import { printWaveFunction, waveFunctionString } from "./wavefunction";
 
 // Bell circuit
 const bellCircuit: Circuit =
@@ -24,9 +24,13 @@ const input: Register = {
     }
 }
 
+console.log('Simulating bell circuit...')
+console.log('Wavefunction before the simulation: ' + waveFunctionString(input.q))
+
 const output = simulate(bellCircuit, input)
 
-printWaveFunction(output.q)
+console.log('Wavefunction after simulation: ' + waveFunctionString(output.q))
+
 
 // Teleportation circuit
 const teleportationCircuit: Circuit = 
@@ -79,8 +83,9 @@ const teleportationInput: Register = {
     }
 }
 
-printWaveFunction(teleportationInput.q)
+console.log('Simulating teleportation circuit...')
+console.log('Wavefunction before the simulation: ' + waveFunctionString(teleportationInput.q))
 
 const teleportationOutput = simulate(teleportationCircuit, teleportationInput)
 
-printWaveFunction(teleportationOutput.q)
+console.log('Wavefunction after simulation: ' + waveFunctionString(teleportationOutput.q))
